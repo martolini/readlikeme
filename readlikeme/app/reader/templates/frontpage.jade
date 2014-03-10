@@ -1,28 +1,77 @@
 extends base
 - block content
-div.header
-	.panel.panel-info
-		.panel-heading
-			h3.panel-title Post an article
-		.panel-body
-			form
-				div.input-group
-					input.form-control(type="text", placeholder="http://yoururl....")
-					span.input-group-btn
-						button.btn.btn-info(type="button") Post!
-div
-	ul.list-group
-		.list-group-item
-			blockquote Teenage Mutant Leela's Hurdles
-			span.pull-right @martolini, 1 hour ago
-			footer http://techcrunch.com/who-needed-readlikeme
-		.list-group-item
-			blockquote A Clone of My Own
-			span.pull-right @martolini, 1 hour ago
-			footer http://techcrunch.com/who-needed-readlikeme
-		.list-group-item
-			blockquote Why big companies are not startups
-			span.pull-right @martolini, 1 hour ago
-			a(href="http://steveblank.com/2014/03/04/why-companies-are-not-startups/", target="_blank")
-				footer http://steveblank.com/2014/03/04/why-companies-are-not-startups/
+
+.container
+	.row
+		.col-sm-3
+			.panel.panel-default
+				.panel-heading
+					if user.is_authenticated
+						h3.panel-title.text-center This is you
+					else
+						h3.panel-title.text-center This would be you
+				.panel-body.text-center
+					if user.is_authenticated
+						p Welcome @{{ user }}
+					else
+						p Welcome @Reader 
+				.panel-footer
+					span.text-success 11 followers
+					span.text-warning.pull-right 19 followees
+			if not user.is_authenticated
+				.panel.panel-default
+					.panel-heading
+						h3.panel-title.text-center Join us
+					.panel-body
+						ul.nav.nav-tabs(style="margin-bottom: 15px;")
+							li.active
+								a(href="#login", data-toggle="tab") Log in
+							li
+								a(href="#signup", data-toggle="tab") Sign up
+						div#myTabContent.tab-content
+							div#login.tab-pane.fade.active.in
+								form(method="POST", action="{% url 'login' %}")
+									- csrf_token
+									input.form-control(name="username", type="text", placeholder="username")
+									input.form-control(name="password", type="password", placeholder="password")
+									button.btn.btn-info(style="margin-top: 5px", type="submit") Log in
+							div#signup.tab-pane.fade
+								form(method="POST", action="{% url 'signup' %}")
+									- csrf_token
+									input.form-control(name="username", type="text", placeholder="username")
+									input.form-control(name="email", type="email", placeholder="your@email")
+									input.form-control(name="password1", type="password", placeholder="password")
+									input.form-control(name="password2", type="password", placeholder="password again")
+									button.btn.btn-info(style="margin-top: 5px", type="submit") Sign up
+
+
+
+
+		.col-sm-8
+			div.header
+				.panel.panel-info
+					.panel-heading
+						h3.panel-title Post an article
+					.panel-body
+						form()
+							div.input-group
+								input.form-control(name="url", type="text", placeholder="http://yoururl....")
+								span.input-group-btn
+									button.btn.btn-info(type="button") Post!
+			div.articles
+				ul.list-group
+					.list-group-item
+						blockquote Teenage Mutant Leela's Hurdles
+						span.pull-right @martolini, 1 hour ago
+						footer http://techcrunch.com/who-needed-readlikeme
+					.list-group-item
+						blockquote A Clone of My Own
+						span.pull-right @martolini, 1 hour ago
+						footer http://techcrunch.com/who-needed-readlikeme
+					.list-group-item
+						blockquote Why big companies are not startups
+						span.pull-right @martolini, 1 hour ago
+						a(href="http://steveblank.com/2014/03/04/why-companies-are-not-startups/", target="_blank")
+							footer http://steveblank.com/2014/03/04/why-companies-are-not-startups/
+
 - endblock

@@ -1,5 +1,5 @@
 from django import forms
-from readlikeme.app.reader.models import Article
+from .models import Article
 
 
 class ArticleForm(forms.ModelForm):
@@ -13,4 +13,4 @@ class ArticleForm(forms.ModelForm):
 
 	class Meta:
 		model = Article
-		exlude = ('user',)
+		exclude = ('user',)

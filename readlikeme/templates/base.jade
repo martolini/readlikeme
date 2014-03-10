@@ -2,7 +2,11 @@
 html(lang="en")
 	head
 		title="readwith.me"
+		script(src="http://code.jquery.com/jquery-1.11.0.min.js", type="text/javascript")
 		link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/simplex/bootstrap.min.css")
+		script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js", type="text/javascript")
+		- block include
+		- endblock
 
 	body
 		.navbar.navbar-default
@@ -14,29 +18,19 @@ html(lang="en")
 				a.navbar-brand(href="#") readlike.me
 			.navbar-collapse.collapse.navbar-responsive-collapse
 				ul.nav.navbar-nav
-					li.active
-						a(href="#") Home
 					li
-						a(href="#") @Me
-				form.navbar-form.navbar-right
-					input.form-control(type="text", placeholder="@Search")
+						a(href="#") Home
+					if user.is_authenticated
+						li
+							a(href="#") @Me
+				ul.nav.navbar-nav.navbar-right
+					li
+						form.navbar-form.navbar-right
+							div.form-group
+								input.form-control(type="text", placeholder="@Search")
+								button.btn.btn-info(type="submit") Search
+					li
+						a(href="{% url 'logout' %}") Logout
 
-		.container
-			.row
-				.col-sm-3
-					.panel.panel-default
-						.panel-heading
-							h3.panel-title.text-center This is you
-						.panel-body.text-center
-							if user.is_authenticated
-								p Welcome @{{ user }}
-							else
-								p Welcome @Reader 
-						.panel-footer
-							span.text-success 11 followers
-							span.text-warning.pull-right 19 followees
-
-
-				.col-sm-8
-					- block content
-					- endblock
+	- block content
+	- endblock
