@@ -10,9 +10,9 @@ from django.contrib.auth.decorators import login_required
 
 def frontpage(request):
 	if request.user.is_authenticated():
-		articles = Article.objects.filter(author__in=request.user.followees.all).order_by('posted_at') | Article.objects.filter(author=request.user).order_by('posted_at')
+		articles = Article.objects.filter(author__in=request.user.followees.all).order_by('-posted_at') | Article.objects.filter(author=request.user).order_by('-posted_at')
 	else:
-		articles = Article.objects.order_by('posted_at')[:10]
+		articles = Article.objects.order_by('-posted_at')[:10]
 	return render(request, 'frontpage.jade', {'articles': articles})
 
 
