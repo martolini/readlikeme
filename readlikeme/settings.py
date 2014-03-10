@@ -43,6 +43,8 @@ INSTALLED_APPS = (
 
     'readlikeme.app',
     'readlikeme.app.reader',
+
+    'pyjade',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,7 +99,14 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'templates')
+    os.path.join(BASE_DIR, 'readlikeme/templates'),
+)
+
+TEMPLATE_LOADERS = (
+    ('pyjade.ext.django.Loader',(
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
 )
 
 LOGIN_URL = '/'

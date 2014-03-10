@@ -1,0 +1,28 @@
+extends base
+- block content
+div.header
+	.panel.panel-info
+		.panel-heading
+			h3.panel-title Post an article
+		.panel-body
+			form
+				div.input-group
+					input.form-control(type="text", placeholder="http://yoururl....")
+					span.input-group-btn
+						button.btn.btn-info(type="button") Post!
+div
+	ul.list-group
+		.list-group-item
+			blockquote Teenage Mutant Leela's Hurdles
+			span.pull-right @martolini, 1 hour ago
+			footer http://techcrunch.com/who-needed-readlikeme
+		.list-group-item
+			blockquote A Clone of My Own
+			span.pull-right @martolini, 1 hour ago
+			footer http://techcrunch.com/who-needed-readlikeme
+		.list-group-item
+			blockquote Why big companies are not startups
+			span.pull-right @martolini, 1 hour ago
+			a(href="http://steveblank.com/2014/03/04/why-companies-are-not-startups/", target="_blank")
+				footer http://steveblank.com/2014/03/04/why-companies-are-not-startups/
+- endblock
