@@ -1,5 +1,5 @@
 from django.db import models
-from readlikeme.core.profiles.models import User
+from readlikeme.core.profiles.models import Reader
 from urllib2 import urlopen, Request
 from BeautifulSoup import BeautifulSoup
 import re
@@ -8,7 +8,7 @@ class Article(models.Model):
 	url = models.URLField()
 	title = models.CharField(max_length=200, blank=True, null=True)
 	description = models.CharField(max_length=160, blank=True, null=True)
-	author = models.ForeignKey(User, related_name="articles")
+	author = models.ForeignKey(Reader, related_name="articles")
 	posted_at = models.DateTimeField(auto_now_add=True)
 
 	def save(self):

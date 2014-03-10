@@ -83,6 +83,8 @@ extends base
 								span.input-group-btn
 									button.btn.btn-info(type="submit") Post!
 			div.list-group
+				if articles
+					p.lead Articles
 				for article in articles
 					a.list-group-item(href="{{ article.url }}", target="_blank")
 						blockquote
@@ -90,6 +92,15 @@ extends base
 							span.pull-right.text-muted @{{ article.author }} {{ article.posted_at|timesince }} ago
 						p.list-group-item-text
 							{{ article.description|safe }}
+
+			div.list-group
+				if readers
+					p.lead Readers
+				for reader in readers
+					a.list-group-item(href="{% url 'profile' reader.username %}")
+						blockquote @{{ reader }}
+						p.list-group-item-text {{ reader.get_full_name }}
+
 							
 
 

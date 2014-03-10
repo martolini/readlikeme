@@ -1,0 +1,133 @@
+extends base
+- block content
+
+.container
+	.row
+		.col-sm-3
+			if reader != user
+				.panel.panel-default
+					.panel-heading
+						if user.is_authenticated
+							h3.panel-title.text-center This is you
+						else
+							h3.panel-title.text-center This would be you
+					.panel-body.text-center
+						if user.is_authenticated
+							p(style="font-size: 22px") {{ user.get_full_name }}
+							p @{{ user }}
+						else
+							p(style="font-size: 22px") John Snow
+							p @Reader 
+					.panel-footer
+						.row.text-center(style="font-size: 20px")
+							div.col-lg-4
+								if user.is_authenticated
+									p.text-success {{ user.followers.count }}
+								else
+									p.text-success 417
+							div.col-lg-4
+								if user.is_authenticated
+									p.text-warning {{ user.articles.count }}
+								else
+									p.text-warning 188
+							div.col-lg-4
+								if user.is_authenticated
+									p.text-info {{ user.followees.count }}
+								else
+									p.text-info 605
+						.row.text-center
+							.col-lg-4
+								p.text-success followers
+							.col-lg-4
+								p.text-warning articles
+							.col-lg-4
+								p.text-info following
+			else
+				if user.is_authenticated
+					.panel.panel-default
+						.panel-heading
+							h3.panel-title.text-center Edit profile
+						.panel-body
+							ul.nav.nav-tabs(style="margin-bottom: 15px;")
+								li.active
+									a(href="#general", data-toggle="tab") General
+								li
+									a(href="#password", data-toggle="tab") Password
+							form(method="POST", action="{% url 'edit_profile' %}")
+								div#myTabContent.tab-content
+									- csrf_token
+									div#general.tab-pane.fade.active.in
+										input.form-control(name="first_name", type="text", placeholder="First name")
+										input.form-control(name="last_name", type="text", placeholder="Last name")
+										textarea.form-control(name="bio", style="resize: vertical;", rows="4", placeholder="Bio")
+										button.btn.btn-info(style="margin-top: 5px", type="submit") Submit
+									div#password.tab-pane.fade
+										input.form-control(name="password", type="password", placeholder="New password")
+										button.btn.btn-info(style="margin-top: 5px;", type="submit") Submit
+			if not user.is_authenticated
+				.panel.panel-default
+					.panel-heading
+						h3.panel-title.text-center Join us
+					.panel-body
+						ul.nav.nav-tabs(style="margin-bottom: 15px;")
+							li.active
+								a(href="#login", data-toggle="tab") Log in
+							li
+								a(href="#signup", data-toggle="tab") Sign up
+						div#myTabContent.tab-content
+							div#login.tab-pane.fade.active.in
+								form(method="POST", action="{% url 'login' %}")
+									- csrf_token
+									input.form-control(name="username", type="text", placeholder="username")
+									input.form-control(name="password", type="password", placeholder="password")
+									button.btn.btn-info(style="margin-top: 5px", type="submit") Log in
+							div#signup.tab-pane.fade
+								form(method="POST", action="{% url 'signup' %}")
+									- csrf_token
+									input.form-control(name="username", type="text", placeholder="username")
+									input.form-control(name="email", type="email", placeholder="your@email")
+									input.form-control(name="password1", type="password", placeholder="password")
+									input.form-control(name="password2", type="password", placeholder="password again")
+									button.btn.btn-info(style="margin-top: 5px", type="submit") Sign up
+
+
+		.col-sm-8
+			.well
+				center
+					a(href="#aboutModal", data-toggle="modal", data-target="#myModal")
+						img(src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R", name="aboutme", width="140", height="140", class="img-circle")
+					p.lead {{ reader.get_full_name }}
+
+				.row.text-center
+					.col-lg-4
+						p {{ reader.followers.count }} followers
+					.col-lg-4
+						p {{ reader.articles.count }} articles
+					.col-lg-4
+						p {{ reader.followees.count }} following
+			.modal.fade(id="myModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+				.modal-dialog(style="background-color: #FFFFFF")
+					.modal-header
+						button.close(type="button", data-dismiss="modal", aria-hidden="true")
+						h4.modal-title(id="myModalLabel") More About {{ user }}
+					.modal-body
+						center
+							img(src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R", name="aboutme", width="140", height="140", border="0", class="img-circle")
+							h3.media-heading {{ reader.get_full_name }}
+						hr
+						center
+							p.text-left {{ reader.bio }}
+					.modal-footer
+						center
+							button.btn.btn-default(type="button", data-dismiss="modal") Thats enough about {{ user }}
+			div.list-group
+				for article in reader.articles.all
+					a.list-group-item(href="{{ article.url }}", target="_blank")
+						blockquote
+							span {{ article.title|safe }}
+							span.pull-right.text-muted @{{ article.author }} {{ article.posted_at|timesince }} ago
+						p.list-group-item-text
+							{{ article.description|safe }}
+
+
+- endblock

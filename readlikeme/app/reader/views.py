@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from readlikeme.core.profiles.models import User
-from readlikeme.core.profiles.forms import UserCreateForm, AuthenticateForm
+from readlikeme.core.profiles.models import Reader
 from .forms import ArticleForm
 from .models import Article
 from django.contrib.auth.decorators import login_required
@@ -24,3 +23,14 @@ def post_article(request):
 		article.save()
 		return redirect('/')
 	return redirect('/')
+
+def search_view(request):
+	if request.POST:
+		query = request.POST.get('query')
+		articles_on_url = Article.objects.filter(url__icontains=query)
+		articles_on_title = Article.objects.filter(title__icontains=query)
+		articles_on_description = Article.objects.filter(description__icontains=query)
+		articles = articles_on_url | articles_on_title | articles_on_description
+		readers = Reader.objects.filter(username__contains=query)
+		return render(request, 'search.jade', {'articles': articles, 'readers': readers})
+	return render(request, 'search.jade', {'articles': Article.objects.all(), 'readers': Reader.objects.all()})

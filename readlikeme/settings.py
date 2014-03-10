@@ -111,5 +111,5 @@ TEMPLATE_LOADERS = (
 
 LOGIN_URL = '/'
 
-AUTH_USER_MODEL = 'profiles.User'
+AUTH_USER_MODEL = 'profiles.Reader'
 
