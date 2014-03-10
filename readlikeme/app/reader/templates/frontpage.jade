@@ -12,12 +12,35 @@ extends base
 						h3.panel-title.text-center This would be you
 				.panel-body.text-center
 					if user.is_authenticated
-						p Welcome @{{ user }}
+						p(style="font-size: 22px") {{ user.get_full_name }}
+						p @{{ user }}
 					else
-						p Welcome @Reader 
+						p(style="font-size: 22px") John Snow
+						p @Reader 
 				.panel-footer
-					span.text-success 11 followers
-					span.text-warning.pull-right 19 followees
+					.row.text-center(style="font-size: 20px")
+						div.col-lg-4
+							if user.is_authenticated
+								p.text-success {{ user.followers.count }}
+							else
+								p.text-success 417
+						div.col-lg-4
+							if user.is_authenticated
+								p.text-warning {{ user.articles.count }}
+							else
+								p.text-warning 188
+						div.col-lg-4
+							if user.is_authenticated
+								p.text-info {{ user.followees.count }}
+							else
+								p.text-info 605
+					.row.text-center
+						.col-lg-4
+							p.text-success followers
+						.col-lg-4
+							p.text-warning articles
+						.col-lg-4
+							p.text-info following
 			if not user.is_authenticated
 				.panel.panel-default
 					.panel-heading
