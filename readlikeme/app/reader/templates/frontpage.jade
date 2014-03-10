@@ -59,14 +59,15 @@ extends base
 								input.form-control(name="url", type="text", placeholder="http://yoururl....")
 								span.input-group-btn
 									button.btn.btn-info(type="submit") Post!
-			div.articles
-				ul.list-group
-					for article in articles
-						.list-group-item
-							blockquote
-								a(href="{{ article.url }}") {{ article.title|safe }}
-							span.list-group-item-text {{ article.description|safe }}
-							footer.pull-right @{{ article.author }} {{ article.posted_at|timesince }}
+			div.list-group
+				for article in articles
+					a.list-group-item(href="{{ article.url }}", target="_blank")
+						blockquote
+							span.active {{ article.title|safe }}
+							span.pull-right.text-muted @{{ article.author }} {{ article.posted_at|timesince }} ago
+						p.list-group-item-text
+							{{ article.description|safe }}
+							
 
 
 - endblock
