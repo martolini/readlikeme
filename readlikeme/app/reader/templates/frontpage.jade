@@ -53,25 +53,20 @@ extends base
 					.panel-heading
 						h3.panel-title Post an article
 					.panel-body
-						form()
+						form(method="POST", action="{% url 'post_article' %}")
+							- csrf_token
 							div.input-group
 								input.form-control(name="url", type="text", placeholder="http://yoururl....")
 								span.input-group-btn
-									button.btn.btn-info(type="button") Post!
+									button.btn.btn-info(type="submit") Post!
 			div.articles
 				ul.list-group
-					.list-group-item
-						blockquote Teenage Mutant Leela's Hurdles
-						span.pull-right @martolini, 1 hour ago
-						footer http://techcrunch.com/who-needed-readlikeme
-					.list-group-item
-						blockquote A Clone of My Own
-						span.pull-right @martolini, 1 hour ago
-						footer http://techcrunch.com/who-needed-readlikeme
-					.list-group-item
-						blockquote Why big companies are not startups
-						span.pull-right @martolini, 1 hour ago
-						a(href="http://steveblank.com/2014/03/04/why-companies-are-not-startups/", target="_blank")
-							footer http://steveblank.com/2014/03/04/why-companies-are-not-startups/
+					for article in articles
+						.list-group-item
+							blockquote
+								a(href="{{ article.url }}") {{ article.title|safe }}
+							span.list-group-item-text {{ article.description|safe }}
+							footer.pull-right @{{ article.author }} {{ article.posted_at|timesince }}
+
 
 - endblock

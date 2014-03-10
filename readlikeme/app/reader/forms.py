@@ -13,4 +13,4 @@ class ArticleForm(forms.ModelForm):
 
 	class Meta:
 		model = Article
-		exclude = ('user',)
+		fields = ('url', )
