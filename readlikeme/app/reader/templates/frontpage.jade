@@ -1,6 +1,11 @@
 extends base
 - block content
 - load thumbnail
+- load staticfiles
+
+- block include
+script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
+- endblock
 
 .container
 	.row
@@ -16,36 +21,40 @@ extends base
 						- thumbnail user.avatar "100x100" crop="center" as im
 						img(src="{{ im.url }}", width="{{ im.width }}", height="{{ im.height }}", class="img-circle")
 						- endthumbnail
-						p(style="font-size: 22px") {{ user.get_full_name }}
-						p @{{ user }}
+						br
+						span(style="font-size: 22px") {{ user.get_full_name }}
+						br
+						span @{{ user }}
 					else
 						img(src="{{ MEDIA_URL }}avatars/no-img.png", width="100", height="100", class="img-circle")
-						p(style="font-size: 22px") John Snow
-						p @Reader 
+						br
+						span(style="font-size: 22px") John Snow
+						br
+						span @Reader 
 				.panel-footer
 					.row.text-center(style="font-size: 20px")
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-success {{ user.followers.count }}
+								span.text-success {{ user.followers.count }}
 							else
-								p.text-success 417
+								span.text-success 417
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-warning {{ user.articles.count }}
+								span.text-warning {{ user.articles.count }}
 							else
-								p.text-warning 188
+								span.text-warning 188
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-info {{ user.following.count }}
+								span.text-info {{ user.following.count }}
 							else
-								p.text-info 605
+								span.text-info 605
 					.row.text-center
 						.col-lg-4
-							p.text-success followers
+							span.text-success followers
 						.col-lg-4
-							p.text-warning articles
+							span.text-warning articles
 						.col-lg-4
-							p.text-info following
+							span.text-info following
 			if not user.is_authenticated
 				.panel.panel-default
 					.panel-heading
@@ -89,7 +98,9 @@ extends base
 									button.btn.btn-info(type="submit") Post!
 			div.list-group
 				for article in articles
-					a.list-group-item(href="{{ article.url }}", target="_blank")
+					a.list-group-item(href="{{ article.url }}", target="_blank", id="{{ article.id }}")
+						if article in user.articles.all
+							button.close(onclick="delete_article($(this)); return false;") ×
 						blockquote
 							span {{ article.title|safe }}
 							span.pull-right.text-muted @{{ article.author }} {{ article.posted_at|timesince }} ago
@@ -98,4 +109,7 @@ extends base
 							
 
 
+- endblock
+- block footer
+script(type="text/javascript", src="{% static 'js/ajax.js' %}")
 - endblock

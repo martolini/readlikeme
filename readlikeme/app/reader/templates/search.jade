@@ -1,5 +1,6 @@
 extends base
 - load staticfiles
+- load thumbnail
 - block include
 script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 
@@ -17,35 +18,43 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 						h3.panel-title.text-center This would be you
 				.panel-body.text-center
 					if user.is_authenticated
-						p(style="font-size: 22px") {{ user.get_full_name }}
-						p @{{ user }}
+						- thumbnail user.avatar "100x100" crop="center" as im
+						img(src="{{ im.url }}", width="{{ im.width }}", height="{{ im.height }}", class="img-circle")
+						- endthumbnail
+						br
+						span(style="font-size: 22px") {{ user.get_full_name }}
+						br
+						span @{{ user }}
 					else
-						p(style="font-size: 22px") John Snow
-						p @Reader 
+						img(src="{{ MEDIA_URL }}avatars/no-img.png", width="100", height="100", class="img-circle")
+						br
+						span(style="font-size: 22px") John Snow
+						br
+						span @Reader 
 				.panel-footer
 					.row.text-center(style="font-size: 20px")
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-success {{ user.followers.count }}
+								span.text-success {{ user.followers.count }}
 							else
-								p.text-success 417
+								span.text-success 417
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-warning {{ user.articles.count }}
+								span.text-warning {{ user.articles.count }}
 							else
-								p.text-warning 188
+								span.text-warning 188
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-info#user-following-count {{ user.following.count }}
+								span.text-info {{ user.following.count }}
 							else
-								p.text-info 605
+								span.text-info 605
 					.row.text-center
 						.col-lg-4
-							p.text-success followers
+							span.text-success followers
 						.col-lg-4
-							p.text-warning articles
+							span.text-warning articles
 						.col-lg-4
-							p.text-info following
+							span.text-info following
 			if not user.is_authenticated
 				.panel.panel-default
 					.panel-heading
@@ -71,7 +80,6 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 									input.form-control(name="password1", type="password", placeholder="password")
 									input.form-control(name="password2", type="password", placeholder="password again")
 									button.btn.btn-info(style="margin-top: 5px", type="submit") Sign up
-
 
 
 
@@ -117,7 +125,7 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 						p.list-group-item-text {{ reader.bio }}
 
 							
-
+- endblock
+- block footer
 script(type="text/javascript", src="{% static 'js/ajax.js' %}")
-
 - endblock
