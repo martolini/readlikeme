@@ -131,4 +131,11 @@ TEMPLATE_LOADERS = (
 LOGIN_URL = '/'
 
 AUTH_USER_MODEL = 'profiles.Reader'
+if not DEBUG:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': 'unix:/opt/readenv/cache/memcached.sock',
+        }
+    }
 
