@@ -88,7 +88,7 @@ else:
         }
     }
     STATIC_ROOT = '/opt/readenv/static'
-    MEDIA_ROOT = '/opt/readenv/uploads'
+    MEDIA_ROOT = '/opt/readenv/media'
 
 
 # Internationalization
