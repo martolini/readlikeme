@@ -20,11 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '@dhcw8duz5i)iq5n0fiqh32z7@8lcu05t!c))#+vlwk3nhpl#$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'floyd' not in socket.gethostname()
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -66,12 +66,29 @@ WSGI_APPLICATION = 'readlikeme.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database.db'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'database.db'),
+        }
     }
-}
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'readlikeme',
+            'USER': 'readuser',
+            'PASSWORD': 'ReadThisPassword',
+            'HOST': 'localhost',
+            'PORT': '',                      # Set to empty string for default.
+        }
+    }
+    STATIC_ROOT = '/opt/readenv/static'
+    MEDIA_ROOT = '/opt/readenv/uploads'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -97,8 +114,6 @@ STATICFILES_DIRS = (
 )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
