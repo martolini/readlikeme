@@ -1,4 +1,9 @@
 extends base
+- load staticfiles
+- block include
+script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
+
+- endblock
 - block content
 
 .container
@@ -31,7 +36,7 @@ extends base
 								p.text-warning 188
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-info {{ user.followees.count }}
+								p.text-info#user-following-count {{ user.following.count }}
 							else
 								p.text-info 605
 					.row.text-center
@@ -85,6 +90,8 @@ extends base
 			div.list-group
 				if articles
 					p.lead Articles
+				else
+					p.lead No articles found...
 				for article in articles
 					a.list-group-item(href="{{ article.url }}", target="_blank")
 						blockquote
@@ -96,12 +103,21 @@ extends base
 			div.list-group
 				if readers
 					p.lead Readers
+				else
+					p.lead No readers found...
 				for reader in readers
 					a.list-group-item(href="{% url 'profile' reader.username %}")
-						blockquote @{{ reader }}
-						p.list-group-item-text {{ reader.get_full_name }}
+						blockquote {{ reader.get_full_name }}
+							p.text-muted @{{ reader }}
+							button.btn.btn-info.pull-right(type="button", id="follow_{{reader.id}}", onclick="follow_reader({{ reader.id }}); return false;")
+								if reader in user.following.all
+									span Unfollow
+								else
+									span Follow
+						p.list-group-item-text {{ reader.bio }}
 
 							
 
+script(type="text/javascript", src="{% static 'js/ajax.js' %}")
 
 - endblock

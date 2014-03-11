@@ -31,7 +31,7 @@ extends base
 								p.text-warning 188
 						div.col-lg-4
 							if user.is_authenticated
-								p.text-info {{ user.followees.count }}
+								p.text-info {{ user.following.count }}
 							else
 								p.text-info 605
 					.row.text-center

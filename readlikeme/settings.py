@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'readlikeme.app.reader',
 
     'pyjade',
+    'django_ajax',
 )
 
 MIDDLEWARE_CLASSES = (

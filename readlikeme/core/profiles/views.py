@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .models import Reader
 from .forms import ReaderCreationForm, AuthenticateForm, ReaderChangeForm
+from django.core.urlresolvers import reverse
+
 
 def login_view(request):
 	if request.POST:
@@ -24,24 +26,19 @@ def signup_view(request):
 			form.save()
 			reader = authenticate(username=username, password=password)
 			login(request, reader)
-			return redirect('/')
+			return redirect(reverse('profile', args=(reader.username, )))
 	return redirect('/')
 
 def profile_view(request, username=False):
 	reader = get_object_or_404(Reader, username=username)
-	return render(request, 'profile.jade', {'reader': reader})
+	form = ReaderChangeForm(instance=reader)
+	return render(request, 'profile.jade', {'reader': reader, 'form': form})
 
 def edit_profile(request):
 	if request.POST:
 		form = ReaderChangeForm(request.POST, instance=request.user)
 		if form.is_valid():
-			reader = request.user
-			reader.first_name = form.cleaned_data['first_name'] or reader.first_name
-			reader.last_name = form.cleaned_data['last_name'] or reader.last_name
-			if request.POST.get('password'):
-				reader.set_password(request.POST.get('password'))
-				#reader.set_password(form.cleaned_data['password'])
-			reader.save()
+			form.save()
 		else:
 			print form.errors
-	return redirect('/reader/martin')
+	return redirect(reverse('profile', args=(request.user.username, )))

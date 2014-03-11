@@ -32,7 +32,7 @@ extends base
 									p.text-warning 188
 							div.col-lg-4
 								if user.is_authenticated
-									p.text-info {{ user.followees.count }}
+									p.text-info#user-following-count {{ user.following.count }}
 								else
 									p.text-info 605
 						.row.text-center
@@ -57,12 +57,12 @@ extends base
 								div#myTabContent.tab-content
 									- csrf_token
 									div#general.tab-pane.fade.active.in
-										input.form-control(name="first_name", type="text", placeholder="First name")
-										input.form-control(name="last_name", type="text", placeholder="Last name")
-										textarea.form-control(name="bio", style="resize: vertical;", rows="4", placeholder="Bio")
+										input.form-control(name="first_name", type="text", placeholder="First name", value="{{ form.first_name.value }}")
+										input.form-control(name="last_name", type="text", placeholder="Last name", value="{{ form.last_name.value }}")
+										textarea.form-control(name="bio", style="resize: vertical;", rows="4", placeholder="Bio") {{ form.bio.value }}
 										button.btn.btn-info(style="margin-top: 5px", type="submit") Submit
 									div#password.tab-pane.fade
-										input.form-control(name="password", type="password", placeholder="New password")
+										input.form-control(name="new_password", type="password", placeholder="New password")
 										button.btn.btn-info(style="margin-top: 5px;", type="submit") Submit
 			if not user.is_authenticated
 				.panel.panel-default
@@ -104,12 +104,12 @@ extends base
 					.col-lg-4
 						p {{ reader.articles.count }} articles
 					.col-lg-4
-						p {{ reader.followees.count }} following
+						p {{ reader.following.count }} following
 			.modal.fade(id="myModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
 				.modal-dialog(style="background-color: #FFFFFF")
 					.modal-header
 						button.close(type="button", data-dismiss="modal", aria-hidden="true")
-						h4.modal-title(id="myModalLabel") More About {{ user }}
+						h4.modal-title(id="myModalLabel") More About {{ reader }}
 					.modal-body
 						center
 							img(src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R", name="aboutme", width="140", height="140", border="0", class="img-circle")
@@ -119,7 +119,7 @@ extends base
 							p.text-left {{ reader.bio }}
 					.modal-footer
 						center
-							button.btn.btn-default(type="button", data-dismiss="modal") Thats enough about {{ user }}
+							button.btn.btn-default(type="button", data-dismiss="modal") Thats enough about @{{ reader }}
 			div.list-group
 				for article in reader.articles.all
 					a.list-group-item(href="{{ article.url }}", target="_blank")

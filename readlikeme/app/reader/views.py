@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 def frontpage(request):
 	if request.user.is_authenticated():
-		articles = Article.objects.filter(author__in=request.user.followees.all).order_by('-posted_at') | Article.objects.filter(author=request.user).order_by('-posted_at')
+		articles = Article.objects.filter(author__in=request.user.following.all).order_by('-posted_at') | Article.objects.filter(author=request.user).order_by('-posted_at')
 	else:
 		articles = Article.objects.order_by('-posted_at')[:10]
 	return render(request, 'frontpage.jade', {'articles': articles})
@@ -31,6 +31,6 @@ def search_view(request):
 		articles_on_title = Article.objects.filter(title__icontains=query)
 		articles_on_description = Article.objects.filter(description__icontains=query)
 		articles = articles_on_url | articles_on_title | articles_on_description
-		readers = Reader.objects.filter(username__contains=query)
+		readers = Reader.objects.filter(username__contains=query).exclude(username=request.user.username)
 		return render(request, 'search.jade', {'articles': articles, 'readers': readers})
 	return render(request, 'search.jade', {'articles': Article.objects.all(), 'readers': Reader.objects.all()})

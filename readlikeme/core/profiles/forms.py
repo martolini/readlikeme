@@ -36,7 +36,8 @@ class AuthenticateForm(AuthenticationForm):
     username = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
     password = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
 
-class ReaderChangeForm(UserChangeForm):
+class ReaderChangeForm(forms.ModelForm):
+    new_password = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(ReaderChangeForm, self).__init__(*args, **kwargs)
@@ -45,8 +46,16 @@ class ReaderChangeForm(UserChangeForm):
             self.fields[key].required = False
 
     def clean_password(self):
-        return self.initial['password']
+        return self.cleaned_data['new_password']
+
+    def save(self, *args, **kwargs):
+        reader = super(ReaderChangeForm, self).save(commit=False)
+        if self.cleaned_data['new_password']:
+            reader.set_password(self.cleaned_data['new_password'])
+        reader.save()
+        return reader
+
 
     class Meta(UserChangeForm.Meta):
+        fields = ['first_name', 'last_name', 'new_password', 'bio']
         model = Reader
-        fields = ['first_name', 'last_name', 'password', 'bio']
