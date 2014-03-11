@@ -21,9 +21,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '@dhcw8duz5i)iq5n0fiqh32z7@8lcu05t!c))#+vlwk3nhpl#$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'floyd' not in socket.gethostname()
+PRODUCTION =  'floyd' not in socket.gethostname()
+DEBUG = True
+THUMBNAIL_DEBUG = DEBUG
 
-TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['*']
 
@@ -67,7 +69,7 @@ WSGI_APPLICATION = 'readlikeme.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-if DEBUG:
+if PRODUCTION:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -131,7 +133,7 @@ TEMPLATE_LOADERS = (
 LOGIN_URL = '/'
 
 AUTH_USER_MODEL = 'profiles.Reader'
-if not DEBUG:
+if PRODUCTION:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
