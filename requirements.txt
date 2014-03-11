@@ -3,7 +3,6 @@ Django==1.6.2
 PIL==1.1.7
 South==0.8.4
 decorator==3.4.0
-django-ajax==2.2.4
 django-bootstrap3==3.1.0
 pyjade==2.2.0
 six==1.5.2
