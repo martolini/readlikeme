@@ -1,5 +1,9 @@
 extends base
 - load thumbnail
+- load staticfiles
+- block include
+script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
+- endblock
 - block content
 
 .container
@@ -107,6 +111,12 @@ extends base
 						- thumbnail reader.avatar "140x140" crop="center" as im
 						img(src="{{ im.url }}", name="aboutme", width="140", height="140", class="img-circle")
 					p.lead {{ reader.get_full_name }}
+					if user != reader and user.is_authenticated
+						button.btn.btn-info(type="button", id="follow_{{reader.id}}", onclick="follow_reader({{ reader.id }}); return false;")
+							if reader in user.following.all
+								span Unfollow
+							else
+								span Follow
 
 				.row.text-center
 					.col-lg-4
@@ -147,5 +157,5 @@ extends base
 						p.list-group-item-text
 							{{ article.description|safe }}
 
-
+script(type="text/javascript", src="{% static 'js/ajax.js' %}")
 - endblock
