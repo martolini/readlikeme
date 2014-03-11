@@ -45,7 +45,7 @@ INSTALLED_APPS = (
     'readlikeme.app.reader',
 
     'pyjade',
-    'django_ajax',
+    'readlikeme.external.django_ajax',
     'sorl.thumbnail',
 )
 

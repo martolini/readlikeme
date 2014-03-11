@@ -1,4 +1,4 @@
-from django_ajax.decorators import ajax
+from readlikeme.external.django_ajax.decorators import ajax
 from .models import Reader
 from django.shortcuts import get_object_or_404, redirect
 
