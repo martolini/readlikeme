@@ -1,4 +1,5 @@
 extends base
+- load thumbnail
 - block content
 
 .container
@@ -50,10 +51,12 @@ extends base
 						.panel-body
 							ul.nav.nav-tabs(style="margin-bottom: 15px;")
 								li.active
-									a(href="#general", data-toggle="tab") General
+									a(href="#general", data-toggle="tab", style="font-size: 12px;") General
 								li
-									a(href="#password", data-toggle="tab") Password
-							form(method="POST", action="{% url 'edit_profile' %}")
+									a(href="#password", data-toggle="tab", style="font-size: 12px;") Password
+								li
+									a(href="#avatar", data-toggle="tab", style="font-size: 12px;") Avatar
+							form(method="POST", action="{% url 'edit_profile' %}", enctype="multipart/form-data")
 								div#myTabContent.tab-content
 									- csrf_token
 									div#general.tab-pane.fade.active.in
@@ -61,9 +64,15 @@ extends base
 										input.form-control(name="last_name", type="text", placeholder="Last name", value="{{ form.last_name.value }}")
 										textarea.form-control(name="bio", style="resize: vertical;", rows="4", placeholder="Bio") {{ form.bio.value }}
 										button.btn.btn-info(style="margin-top: 5px", type="submit") Submit
+									
 									div#password.tab-pane.fade
 										input.form-control(name="new_password", type="password", placeholder="New password")
 										button.btn.btn-info(style="margin-top: 5px;", type="submit") Submit
+									
+									div#avatar.tab-pane.fade
+										input.form-control(name="avatar", type="file", style="") Upload
+										button.btn.btn-info(style="margin-top: 5px;", type="submit") Submit
+			
 			if not user.is_authenticated
 				.panel.panel-default
 					.panel-heading
@@ -95,16 +104,24 @@ extends base
 			.well
 				center
 					a(href="#aboutModal", data-toggle="modal", data-target="#myModal")
-						img(src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R", name="aboutme", width="140", height="140", class="img-circle")
+						- thumbnail reader.avatar "140x140" crop="center" as im
+						img(src="{{ im.url }}", name="aboutme", width="140", height="140", class="img-circle")
 					p.lead {{ reader.get_full_name }}
 
 				.row.text-center
 					.col-lg-4
-						p {{ reader.followers.count }} followers
+						p.lead.text-success {{ reader.followers.count }}
 					.col-lg-4
-						p {{ reader.articles.count }} articles
+						p.lead.text-warning {{ reader.articles.count }}
 					.col-lg-4
-						p {{ reader.following.count }} following
+						p.lead.text-info {{ reader.following.count }}
+				.row.text-center
+					.col-lg-4
+						p.text-success followers
+					.col-lg-4
+						p.text-warning articles
+					.col-lg-4
+						p.text-info following
 			.modal.fade(id="myModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
 				.modal-dialog(style="background-color: #FFFFFF")
 					.modal-header
@@ -112,7 +129,8 @@ extends base
 						h4.modal-title(id="myModalLabel") More About {{ reader }}
 					.modal-body
 						center
-							img(src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R", name="aboutme", width="140", height="140", border="0", class="img-circle")
+							img(src="{{ im.url }}", name="aboutme", width="140", height="140", border="0", class="img-circle")
+							- endthumbnail
 							h3.media-heading {{ reader.get_full_name }}
 						hr
 						center

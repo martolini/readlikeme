@@ -36,9 +36,7 @@ def profile_view(request, username=False):
 
 def edit_profile(request):
 	if request.POST:
-		form = ReaderChangeForm(request.POST, instance=request.user)
+		form = ReaderChangeForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
 			form.save()
-		else:
-			print form.errors
 	return redirect(reverse('profile', args=(request.user.username, )))

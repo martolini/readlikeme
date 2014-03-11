@@ -12,7 +12,7 @@ class ReaderAdmin(UserAdmin):
     form = ReaderChangeForm
 
     fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('bio', 'followers',)}),
+            (None, {'fields': ('bio', 'followers', 'avatar', )}),
     )
 
 

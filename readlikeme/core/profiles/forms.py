@@ -38,15 +38,13 @@ class AuthenticateForm(AuthenticationForm):
 
 class ReaderChangeForm(forms.ModelForm):
     new_password = forms.CharField()
+    new_avatar = forms.ImageField()
 
     def __init__(self, *args, **kwargs):
         super(ReaderChangeForm, self).__init__(*args, **kwargs)
 
         for key in self.fields:
             self.fields[key].required = False
-
-    def clean_password(self):
-        return self.cleaned_data['new_password']
 
     def save(self, *args, **kwargs):
         reader = super(ReaderChangeForm, self).save(commit=False)
@@ -57,5 +55,5 @@ class ReaderChangeForm(forms.ModelForm):
 
 
     class Meta(UserChangeForm.Meta):
-        fields = ['first_name', 'last_name', 'new_password', 'bio']
+        fields = ['first_name', 'last_name', 'new_password', 'bio', 'avatar']
         model = Reader

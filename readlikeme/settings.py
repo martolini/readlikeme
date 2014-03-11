@@ -46,6 +46,7 @@ INSTALLED_APPS = (
 
     'pyjade',
     'django_ajax',
+    'sorl.thumbnail',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,6 +95,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "files/static"),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 TEMPLATE_DIRS = (

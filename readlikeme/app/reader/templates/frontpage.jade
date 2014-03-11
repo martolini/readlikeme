@@ -1,5 +1,6 @@
 extends base
 - block content
+- load thumbnail
 
 .container
 	.row
@@ -12,9 +13,13 @@ extends base
 						h3.panel-title.text-center This would be you
 				.panel-body.text-center
 					if user.is_authenticated
+						- thumbnail user.avatar "100x100" crop="center" as im
+						img(src="{{ im.url }}", width="{{ im.width }}", height="{{ im.height }}", class="img-circle")
+						- endthumbnail
 						p(style="font-size: 22px") {{ user.get_full_name }}
 						p @{{ user }}
 					else
+						img(src="{{ MEDIA_URL }}avatars/no-img.png", width="100", height="100", class="img-circle")
 						p(style="font-size: 22px") John Snow
 						p @Reader 
 				.panel-footer
