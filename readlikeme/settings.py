@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '@dhcw8duz5i)iq5n0fiqh32z7@8lcu05t!c))#+vlwk3nhpl#$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-PRODUCTION =  'floyd' not in socket.gethostname()
+PRODUCTION =  'floyd' in socket.gethostname()
 DEBUG = True
 THUMBNAIL_DEBUG = DEBUG
 
@@ -69,14 +69,14 @@ WSGI_APPLICATION = 'readlikeme.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-if PRODUCTION:
+if not PRODUCTION:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'database.db'),
         }
     }
-    MEDIA_ROOT = 'opt/readenv/media'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 else:
     DATABASES = {
@@ -89,8 +89,8 @@ else:
             'PORT': '',                      # Set to empty string for default.
         }
     }
+    MEDIA_ROOT = '/opt/readenv/media'
     STATIC_ROOT = '/opt/readenv/static'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
