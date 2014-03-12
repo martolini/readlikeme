@@ -76,6 +76,7 @@ if PRODUCTION:
             'NAME': os.path.join(BASE_DIR, 'database.db'),
         }
     }
+    MEDIA_ROOT = 'opt/readenv/media'
 
 else:
     DATABASES = {
@@ -89,8 +90,8 @@ else:
         }
     }
     STATIC_ROOT = '/opt/readenv/static'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
