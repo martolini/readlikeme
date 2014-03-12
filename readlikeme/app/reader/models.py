@@ -7,7 +7,7 @@ import re
 class Article(models.Model):
 	url = models.URLField()
 	title = models.CharField(max_length=200, blank=True, null=True)
-	description = models.CharField(max_length=160, blank=True, null=True)
+	description = models.CharField(max_length=300, blank=True, null=True)
 	author = models.ForeignKey(Reader, related_name="articles")
 	posted_at = models.DateTimeField(auto_now_add=True)
 

@@ -1,0 +1,16 @@
+div.list-group
+	for article in articles
+		div.list-group-item
+			.row
+				.col-sm-12
+					if article in user.articles.all
+						button.close.pull-right(onclick="delete_article($(this)); return false;", id="{{ article.id }}") ×
+					blockquote
+						a(href="{{ article.url }}", target="_blank") {{ article.title|safe }}	
+			.row
+				.col-sm-12
+					p.list-group-item-text {{ article.description|safe }}
+			.row
+				.col-sm-12
+					span.pull-right(style="padding-left: 10px;") {{ article.posted_at|timesince }} ago
+					a.pull-right(href="{% url 'profile' article.author %}") @{{ article.author }}

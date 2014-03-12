@@ -1,0 +1,10 @@
+for reader in readers
+	a.list-group-item(href="{% url 'profile' reader.username %}")
+		blockquote {{ reader.get_full_name }}
+			p.text-muted @{{ reader }}
+			button.btn.btn-info.pull-right(type="button", id="follow_{{reader.id}}", onclick="follow_reader({{ reader.id }}); return false;")
+				if reader in user.following.all
+					span Unfollow
+				else
+					span Follow
+		p.list-group-item-text {{ reader.bio }}

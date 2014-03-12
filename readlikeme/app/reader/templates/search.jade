@@ -1,6 +1,8 @@
 extends base
 - load staticfiles
 - load thumbnail
+- load reader_tags
+- load article_tags
 - block include
 script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 
@@ -10,78 +12,7 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 .container
 	.row
 		.col-sm-3
-			.panel.panel-default
-				.panel-heading
-					if user.is_authenticated
-						h3.panel-title.text-center This is you
-					else
-						h3.panel-title.text-center This would be you
-				.panel-body.text-center
-					if user.is_authenticated
-						- thumbnail user.avatar "100x100" crop="center" as im
-						img(src="{{ im.url }}", width="{{ im.width }}", height="{{ im.height }}", class="img-circle")
-						- endthumbnail
-						br
-						span(style="font-size: 22px") {{ user.get_full_name }}
-						br
-						span @{{ user }}
-					else
-						img(src="{{ MEDIA_URL }}avatars/no-img.png", width="100", height="100", class="img-circle")
-						br
-						span(style="font-size: 22px") John Snow
-						br
-						span @Reader 
-				.panel-footer
-					.row.text-center(style="font-size: 20px")
-						div.col-lg-4
-							if user.is_authenticated
-								span.text-success {{ user.followers.count }}
-							else
-								span.text-success 417
-						div.col-lg-4
-							if user.is_authenticated
-								span.text-warning {{ user.articles.count }}
-							else
-								span.text-warning 188
-						div.col-lg-4
-							if user.is_authenticated
-								span.text-info {{ user.following.count }}
-							else
-								span.text-info 605
-					.row.text-center
-						.col-lg-4
-							span.text-success followers
-						.col-lg-4
-							span.text-warning articles
-						.col-lg-4
-							span.text-info following
-			if not user.is_authenticated
-				.panel.panel-default
-					.panel-heading
-						h3.panel-title.text-center Join us
-					.panel-body
-						ul.nav.nav-tabs(style="margin-bottom: 15px;")
-							li.active
-								a(href="#login", data-toggle="tab") Log in
-							li
-								a(href="#signup", data-toggle="tab") Sign up
-						div#myTabContent.tab-content
-							div#login.tab-pane.fade.active.in
-								form(method="POST", action="{% url 'login' %}")
-									- csrf_token
-									input.form-control(name="username", type="text", placeholder="username")
-									input.form-control(name="password", type="password", placeholder="password")
-									button.btn.btn-info(style="margin-top: 5px", type="submit") Log in
-							div#signup.tab-pane.fade
-								form(method="POST", action="{% url 'signup' %}")
-									- csrf_token
-									input.form-control(name="username", type="text", placeholder="username")
-									input.form-control(name="email", type="email", placeholder="your@email")
-									input.form-control(name="password1", type="password", placeholder="password")
-									input.form-control(name="password2", type="password", placeholder="password again")
-									button.btn.btn-info(style="margin-top: 5px", type="submit") Sign up
-
-
+			- show_reader_dashboard
 
 		.col-sm-8
 			div.header
@@ -92,7 +23,7 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 						form(method="POST", action="{% url 'post_article' %}")
 							- csrf_token
 							div.input-group
-								input.form-control(name="url", type="text", placeholder="http://yoururl....")
+								input.form-control(name="url", type="text", placeholder="http://yoururl....", required="true")
 								span.input-group-btn
 									button.btn.btn-info(type="submit") Post!
 			div.list-group
@@ -100,29 +31,14 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 					p.lead Articles
 				else
 					p.lead No articles found...
-				for article in articles
-					a.list-group-item(href="{{ article.url }}", target="_blank")
-						blockquote
-							span {{ article.title|safe }}
-							span.pull-right.text-muted @{{ article.author }} {{ article.posted_at|timesince }} ago
-						p.list-group-item-text
-							{{ article.description|safe }}
+				- list_articles articles
 
 			div.list-group
 				if readers
 					p.lead Readers
 				else
 					p.lead No readers found...
-				for reader in readers
-					a.list-group-item(href="{% url 'profile' reader.username %}")
-						blockquote {{ reader.get_full_name }}
-							p.text-muted @{{ reader }}
-							button.btn.btn-info.pull-right(type="button", id="follow_{{reader.id}}", onclick="follow_reader({{ reader.id }}); return false;")
-								if reader in user.following.all
-									span Unfollow
-								else
-									span Follow
-						p.list-group-item-text {{ reader.bio }}
+				- list_readers readers
 
 							
 - endblock
