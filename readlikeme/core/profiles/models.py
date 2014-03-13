@@ -12,7 +12,7 @@ class Reader(AbstractUser):
 		try:
 			this = Reader.objects.get(id=self.id)
 			if this.avatar != self.avatar:
-				this.image.delete(save=False)
+				this.avatar.delete(save=False)
 		except:
 			pass
 		super(Reader, self).save(*args, **kwargs)
