@@ -32,7 +32,7 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 								div#general.tab-pane.fade.active.in
 									input.form-control(name="first_name", type="text", placeholder="First name", value="{{ form.first_name.value }}")
 									input.form-control(name="last_name", type="text", placeholder="Last name", value="{{ form.last_name.value }}")
-									textarea.form-control(name="bio", style="resize: vertical;", rows="4", placeholder="Bio") {{ form.bio.value }}
+									textarea.form-control(name="bio", style="resize: vertical;", rows="6", placeholder="Bio") {{ form.bio.value }}
 									button.btn.btn-info(style="margin-top: 5px", type="submit") Submit
 								
 								div#password.tab-pane.fade
