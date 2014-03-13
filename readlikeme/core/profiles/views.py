@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from .models import Reader
 from .forms import ReaderCreationForm, AuthenticateForm, ReaderChangeForm
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 
 def login_view(request):
@@ -39,4 +40,7 @@ def edit_profile(request):
 		form = ReaderChangeForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
 			form.save()
+			messages.success(request, "You sucessfully edited your profile.")
+		else:
+			message.error(request, "Something went wrong.")
 	return redirect(reverse('profile', args=(request.user.username, )))
