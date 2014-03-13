@@ -71,3 +71,16 @@ if not user.is_authenticated
 						input.form-control(name="password1", type="password", placeholder="password")
 						input.form-control(name="password2", type="password", placeholder="password again")
 						button.btn.btn-info(style="margin-top: 5px", type="submit") Sign up
+
+else
+	if suggested_readers
+		.panel.panel-default
+			.panel-heading
+				h3.panel-title.text-center Who to follow
+			.panel-body
+				.list-group
+					for reader in suggested_readers
+						a.list-group-item(href="{% url 'profile' reader.username %}")
+							span.text-muted {{ reader.get_full_name }}
+							br
+							span.text-muted @{{ reader }}
