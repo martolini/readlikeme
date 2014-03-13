@@ -63,11 +63,13 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 				hr
 				.row.text-center
 					.col-lg-4
-						span.lead.text-success {{ reader.followers.count }}
+						a(href="#", data-toggle="modal", data-target="#readerFollowersModal")
+							span.lead.text-success {{ reader.followers.count }}
 					.col-lg-4
 						span.lead.text-warning {{ reader.articles.count }}
 					.col-lg-4
-						span.lead.text-info {{ reader.following.count }}
+						a(href="#", data-toggle="modal", data-target="#readerFollowingModal")
+							span.lead.text-info {{ reader.following.count }}
 				.row.text-center
 					.col-lg-4
 						span.text-success followers
@@ -93,6 +95,26 @@ script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 					.modal-footer
 						center
 							button.btn.btn-default(type="button", data-dismiss="modal") Thats enough about @{{ reader }}
+
+			.modal.fade(id="readerFollowersModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+				.modal-dialog(style="background-color: #FFFFFF")
+					.modal-header
+						button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+						h4.modal-title Followers
+					.modal-body
+						.list-group
+							for follower in reader.followers.all
+								a.list-group-item(href="{% url 'profile' follower.username %}") @ {{ follower }}
+
+			.modal.fade(id="readerFollowingModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+				.modal-dialog(style="background-color: #FFFFFF")
+					.modal-header
+						button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+						h4.modal-title Following
+					.modal-body
+						.list-group
+							for following in reader.following.all
+								a.list-group-item(href="{% url 'profile' following.username %}") @ {{ following }}
 			- list_articles reader.articles.all
 
 - endblock
