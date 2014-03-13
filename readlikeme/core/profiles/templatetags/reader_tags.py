@@ -5,8 +5,11 @@ register = template.Library()
 
 @register.inclusion_tag('reader_dashboard.jade', takes_context = True)
 def show_reader_dashboard(context):
-	reader = context['user']
-	readers = Reader.objects.exclude(pk=reader.pk).exclude(id__in=reader.following.all())
+	if request.user.is_authenticated():
+		reader = context['user']
+		readers = Reader.objects.exclude(pk=reader.pk).exclude(id__in=reader.following.all())
+	else:
+		readers = []
 	return {'user': context['user'], 'suggested_readers': readers}
 
 @register.inclusion_tag('list_readers.jade', takes_context = True)
