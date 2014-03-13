@@ -31,6 +31,6 @@ def search_view(request):
 		articles_on_title = Article.objects.filter(title__icontains=query)
 		articles_on_description = Article.objects.filter(description__icontains=query)
 		articles = articles_on_url | articles_on_title | articles_on_description
-		readers = Reader.objects.filter(username__contains=query).exclude(username=request.user.username)
+		readers = Reader.objects.filter(username__icontains=query).exclude(username=request.user.username)
 		return render(request, 'search.jade', {'articles': articles, 'readers': readers})
 	return render(request, 'search.jade', {'articles': Article.objects.all(), 'readers': Reader.objects.all()})
