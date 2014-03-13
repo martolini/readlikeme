@@ -26,7 +26,8 @@
 		.row.text-center(style="font-size: 20px")
 			div.col-lg-4
 				if user.is_authenticated
-					span.text-success {{ user.followers.count }}
+					a(href="#aboutModal", data-toggle="modal", data-target="#followersModal")
+						span.text-success {{ user.followers.count }}
 				else
 					span.text-success 417
 			div.col-lg-4
@@ -36,7 +37,8 @@
 					span.text-warning 188
 			div.col-lg-4
 				if user.is_authenticated
-					span.text-info#user-following-count {{ user.following.count }}
+					a(href="#", data-toggle="modal", data-target="#followingModal")
+						span.text-info#user-following-count {{ user.following.count }}
 				else
 					span.text-info 605
 		.row.text-center
@@ -84,3 +86,23 @@ else
 							span.text-muted {{ reader.get_full_name }}
 							br
 							span.text-muted @{{ reader }}
+
+	.modal.fade(id="followersModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+		.modal-dialog(style="background-color: #FFFFFF")
+			.modal-header
+				button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+				h4.modal-title Followers
+			.modal-body
+				.list-group
+					for follower in user.followers.all
+						a.list-group-item(href="{% url 'profile' follower.username %}") @ {{ follower }}
+
+	.modal.fade(id="followingModal" tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+		.modal-dialog(style="background-color: #FFFFFF")
+			.modal-header
+				button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+				h4.modal-title Following
+			.modal-body
+				.list-group
+					for following in user.following.all
+						a.list-group-item(href="{% url 'profile' following.username %}") @ {{ following }}
