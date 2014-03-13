@@ -2,12 +2,13 @@ extends base
 - load staticfiles
 - load reader_tags
 - load article_tags
-- block content
 
 
 - block include
 script(src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
 - endblock
+- block content
+
 
 .container
 	.row
