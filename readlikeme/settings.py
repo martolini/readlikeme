@@ -46,6 +46,7 @@ INSTALLED_APPS = (
 
     'readlikeme.app',
     'readlikeme.app.reader',
+    'readlikeme.app.viewcount',
 
     'pyjade',
     'readlikeme.external.django_ajax',

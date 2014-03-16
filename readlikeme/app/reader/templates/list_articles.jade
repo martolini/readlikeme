@@ -6,11 +6,15 @@ div.list-group
 					if article in user.articles.all
 						button.close.pull-right(onclick="delete_article($(this)); return false;", id="{{ article.id }}") ×
 					blockquote
-						a(href="{{ article.url }}", target="_blank") {{ article.title|safe }}	
+						a(href="{{ article.url }}", target="_blank", onclick="view_article({{ article.id }})") {{ article.title|safe }}	
 			.row
 				.col-sm-12
 					p.list-group-item-text {{ article.description|safe }}
-			.row
-				.col-sm-12
-					span.pull-right(style="padding-left: 10px;") {{ article.posted_at|timesince }} ago
+			.row(style="padding-top: 10px")
+				.col-sm-4
+					span.text-muted
+						span(id="article-{{ article.id }}-views" style="padding-left: 5px;") {{ article.viewcount.count }}
+						span(style="padding-left:5px;") readers read this article
+				.col-sm-8
+					span.pull-right(style="padding-left: 10px;") {{ article.posted_at|timesince }}
 					a.pull-right(href="{% url 'profile' article.author %}") @{{ article.author }}

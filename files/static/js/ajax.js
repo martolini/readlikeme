@@ -13,3 +13,9 @@ function delete_article(button) {
 
     });
 }
+
+function view_article(a_id) {
+    ajaxPost('/viewcount/ajax/view/', {
+        'a_id': a_id
+    });
+}

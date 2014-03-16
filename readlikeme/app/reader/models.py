@@ -1,8 +1,11 @@
 from django.db import models
 from readlikeme.core.profiles.models import Reader
+from readlikeme.app.viewcount.models import ViewCount
 from urllib2 import urlopen, Request
 from BeautifulSoup import BeautifulSoup
 import re
+from django.contrib.contenttypes import generic
+
 
 class Article(models.Model):
 	url = models.URLField()
@@ -10,6 +13,7 @@ class Article(models.Model):
 	description = models.CharField(max_length=300, blank=True, null=True)
 	author = models.ForeignKey(Reader, related_name="articles")
 	posted_at = models.DateTimeField(auto_now_add=True)
+	viewcount = generic.GenericRelation(ViewCount)
 
 	def save(self):
 		if self.id:
@@ -23,6 +27,7 @@ class Article(models.Model):
 		else:
 			self.title, self.description = self.get_title_and_description(self.url)
 		super(Article, self).save()
+
 
 	def get_title_and_description(self, url):
 		hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',

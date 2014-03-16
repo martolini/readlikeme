@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('readlikeme.app.reader.urls')),
     url(r'^reader/', include('readlikeme.core.profiles.urls')),
+    url(r'^viewcount/', include('readlikeme.app.viewcount.urls')),
 )
 
 if settings.DEBUG:
