@@ -63,7 +63,7 @@ class Article(models.Model):
 
 
 def show_me_the_money(sender, **kwargs):
-	print sender.payment_status
+	Article(url="http://google.no", author=Reader.objects.all()[0]).save()
 
 payment_was_reversed.connect(show_me_the_money)
 payment_was_refunded.connect(show_me_the_money)
