@@ -8,7 +8,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
-
+from random import randint
 
 def frontpage(request):
 	if request.user.is_authenticated():
@@ -43,7 +43,7 @@ def purchase_credits(request):
 	"business": settings.PAYPAL_RECEIVER_EMAIL,
 	"amount": "1.00",
 	"item_name": "1000 Credits",
-	"invoice": "23987",
+	"invoice": str(randint(1000,100000)),
 	"notify_url": "http://www.readlike.me" + reverse('paypal-ipn'),
 	"return_url": "http://www.readlike.me/credits/return/",
 	"cancel_return": "http://www.readlike.me/credits/cancel/",
@@ -52,14 +52,13 @@ def purchase_credits(request):
 	return render(request, "purchase.jade", {'form': form})
 
 @csrf_exempt
-def purchase_return(request):
+def purchase_return(request, shit=None):
 	if request.POST:
-		print 'post: ',
-		print request.POST
-	return render(request, 'purchase_return.jade')
+		shit = request.POST
+	return render(request, 'purchase_return.jade', {'shit': shit})
 @csrf_exempt
 def purchase_cancel(request):
 	if request.POST:
 		print 'post: ', 
 		print request.POST
-	return render(request, 'purschase_cancel.jade')
+	return render(request, 'purchase_cancel.jade')
