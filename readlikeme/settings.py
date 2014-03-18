@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'pyjade',
     'readlikeme.external.django_ajax',
     'sorl.thumbnail',
-    'paypal.standard.ipn',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -144,7 +143,3 @@ if PRODUCTION:
         }
     }
 
-
-# paypal
-PAYPAL_RECEIVER_EMAIL = "buyer@flockwith.me"
-PAYPAL_TEST = True

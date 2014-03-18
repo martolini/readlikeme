@@ -5,7 +5,6 @@ from urllib2 import urlopen, Request
 from BeautifulSoup import BeautifulSoup
 import re
 from django.contrib.contenttypes import generic
-from paypal.standard.ipn.signals import payment_was_successful, payment_was_flagged, payment_was_refunded, payment_was_reversed
 
 
 class Article(models.Model):
@@ -60,12 +59,3 @@ class Article(models.Model):
 
 	def __unicode__(self):
 		return self.url
-
-
-def show_me_the_money(sender, **kwargs):
-	Article(url="http://google.no", author=Reader.objects.all()[0]).save()
-
-payment_was_reversed.connect(show_me_the_money)
-payment_was_refunded.connect(show_me_the_money)
-payment_was_successful.connect(show_me_the_money)
-payment_was_flagged.connect(show_me_the_money)
